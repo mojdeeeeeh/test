@@ -1,0 +1,337 @@
+
+theme2-> //  link maps.googleapis font and script maps.googleapis
+theme2-> js- main.js-> delete google map
+
+ckfinder->insert to bower_components theme1 but not work
+erorr readorinsert for tag
+photo 
+
+var get_latitude = $('#google-map').data('latitude');
+  var get_longitude = $('#google-map').data('longitude');
+
+  function initialize_google_map() {
+    var myLatlng = new google.maps.LatLng(get_latitude, get_longitude);
+    var mapOptions = {
+      zoom: 14,
+      scrollwheel: false,
+      center: myLatlng
+    };
+    var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize_google_map);
+
+
+
+
+
+////////////////
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Post;
+use App\Tag;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+      public function __construct()
+    {
+        $this->middleware('auth')->except(['show', 'addComment']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $posts = \App\Post::orderBy('created_at', 'desc')
+        ->paginate(5);
+        return view('posts.index', compact('posts'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $tags = Tag::pluck('value', 'value')->all();
+
+        return view('posts.create',compact(['post','tags']));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|min:2|max:255',
+            'brief' => 'required|min:6',
+            'body' => 'required|min:6'
+        ]);
+
+        
+        $user = \Auth::user();
+
+        $post = Post::create ([
+            'title'  => $request->title,
+            'brief'   => $request->brief,
+            'body'   => $request->body,
+            'user_id' => $user->id,
+        ]);
+        $tagsId = collect($request->tags)->map(function($tag) {
+            return Tag::firstOrCreate(['value' => $tag])->id;
+        });
+
+        $post->tags()->attach($tagsId);
+        
+        return redirect()->route('posts.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(post $post)
+    {
+        $post->load('comments');
+
+        return view('comments.create', compact('post'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(post $post)
+    {
+        $tags = Tag::pluck('value', 'value')->all();
+
+        return view('posts.edit', compact(['post', 'tags']));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, post $post)
+    {
+
+        $this->validate($request, [
+        'title' => 'required|min:2|max:255',
+        'brief' => 'required|min:6',
+        'body' => 'required|min:6'
+    ]);
+       
+
+    $post->update ([
+        'title' => $request->title,
+        'brief' => $request->brief,
+        'body'  => $request->body,
+    ]); 
+$tagsId = collect($request->tags)->map(function($tag) {
+            return Tag::firstOrCreate(['name' => $tag])->id;
+        });
+
+        $post->tags()->sync($tagsId);
+  
+    return redirect()->route('posts.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(post $post)
+    {
+        $post->delete();
+    }
+
+     public function addComment(Request $request, Post $post)
+    {
+        $post->comments()->create([
+            'cmBody' => $request->cmBody,
+            'cmName' => $request->cmName,
+            'cmEmail' => $request->cmEmail
+        ]);
+
+        return back()->withInput();
+    }
+}
+
+///////////////////////////
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Post;
+use App\Tag;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+      public function __construct()
+    {
+        $this->middleware('auth')->except(['show', 'addComment']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $posts = \App\Post::orderBy('created_at', 'desc')
+        ->paginate(5);
+        return view('posts.index', compact('posts'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $tags = Tag::pluck('value', 'value')->all();
+
+        return view('posts.create',compact(['post','tags']));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|min:2|max:255',
+            'brief' => 'required|min:6',
+            'body' => 'required|min:6'
+        ]);
+
+        
+        $user = \Auth::user();
+
+        $post = Post::create ([
+            'title'  => $request->title,
+            'brief'   => $request->brief,
+            'body'   => $request->body,
+            'user_id' => $user->id,
+        ]);
+        $tagsId = collect($request->tags)->map(function($tag) {
+            return Tag::firstOrCreate(['value' => $tag])->id;
+        });
+
+        $post->tags()->attach($tagsId);
+        
+        return redirect()->route('posts.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(post $post)
+    {
+        $post->load('comments');
+
+        return view('comments.create', compact('post'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(post $post)
+    {
+        $tags = Tag::pluck('value', 'value')->all();
+
+        return view('posts.edit', compact(['post', 'tags']));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, post $post)
+    {
+
+        $this->validate($request, [
+        'title' => 'required|min:2|max:255',
+        'brief' => 'required|min:6',
+        'body' => 'required|min:6'
+    ]);
+       
+
+    $post->update ([
+        'title' => $request->title,
+        'brief' => $request->brief,
+        'body'  => $request->body,
+    ]); 
+$tagsId = collect($request->tags)->map(function($tag) {
+            return Tag::firstOrCreate(['name' => $tag])->id;
+        });
+
+        $post->tags()->sync($tagsId);
+  
+    return redirect()->route('posts.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(post $post)
+    {
+        $post->delete();
+    }
+
+     public function addComment(Request $request, Post $post)
+    {
+        $post->comments()->create([
+            'cmBody' => $request->cmBody,
+            'cmName' => $request->cmName,
+            'cmEmail' => $request->cmEmail
+        ]);
+
+        return back()->withInput();
+    }
+}
+
+
+

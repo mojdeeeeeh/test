@@ -1,0 +1,28 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "../css/fonts.css";
+
+
+.post-container{
+	line-height: 2em;
+}
+
+.post-container .title{
+	text-align    : center;
+	color         : #8EB4CB!important;
+	text-transform: uppercase;
+	margin-bottom : 2em;
+	border-bottom : 1px solid #8EB4CB;
+}
+
+.align-center{
+	text-align: center;
+}
