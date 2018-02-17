@@ -13,9 +13,22 @@
       	<div class="col-md-6">
 
            {{-- <input type="file" name=""> --}}
-           		<form action="{{ route('photos') }}" method="post" class="dropzone" id="addPhotosForm">
-           			{{ csrf_field() }}
-           		</form>
+         {{--   		  <form action="/upload" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+
+        <input type="file" name="image" />
+        <input type="submit" value="Send photo" />
+    </form> --}}
+<form action=action='{{ url("photos") }}' method="POST" enctype="multipart/form-data">
+  {{ csrf_field() }}
+  <div class="form-group">
+     <label for="photo">File input</label>
+     <input type="file" id="photo" name="photo">
+  </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
            </div>
         </div>
     </section>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class UploadController extends Controller
 {
     public function __construct ()
@@ -41,13 +42,28 @@ class UploadController extends Controller
     {
        // dd ($request->file('image'));
         
-        if(Input::hasFile('file')){
+        // if(Input::hasFile('file')){
 
-            echo 'Uploaded';
-            $file = Input::file('file');
-            $file->move('photos', $file->getClientOriginalName());
-            echo '';
-        }
+        //     echo 'Uploaded';
+        //     $file = Input::file('file');
+        //     $file->move('photos', $file->getClientOriginalName());
+        //     echo '';
+        // }
+        // 
+        
+ if ($request->file('photo') == null) {
+    $file = "";
+}else{
+   $file = $request->file('photo')->store('images');  
+}
+
+// $path = $request->file('avatar')->storeAs(
+//     'avatars', $request->user()->id
+// );
+// 
+
+
+
     }
 
     /**
@@ -94,4 +110,6 @@ class UploadController extends Controller
     {
         //
     }
+
+    
 }

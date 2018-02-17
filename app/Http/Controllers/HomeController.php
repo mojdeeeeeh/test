@@ -15,44 +15,41 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+     public function index()
+    {
+        return view('home');
+    }
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('home');
-    }
-
    
-    public function fileUpload(Request $request)
+   
+    // public function fileUpload(Request $request)
+    // {
+    //     $this->validate($request, [
+    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //     ]);
 
+    //     $image = $request->file('image');
+    //     $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+    //     $destinationPath = public_path('/images');
+    //     $image->move($destinationPath, $input['imagename']);
+
+    //     $this->postImage->add($input);
+
+    //     return back()->with('success','Image Upload successful');
+    // }
+
+    public function dashboard1()
     {
-
-        $this->validate($request, [
-
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-        ]);
-
-
-        $image = $request->file('image');
-
-        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-
-        $destinationPath = public_path('/images');
-
-        $image->move($destinationPath, $input['imagename']);
-
-
-        $this->postImage->add($input);
-
-
-        return back()->with('success','Image Upload successful');
-
+        return view('dashboard-1');
     }
-
+     public function dashboard2()
+    {
+        return view('dashboard-2');
+    }
 
 }

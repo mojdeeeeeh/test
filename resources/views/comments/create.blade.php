@@ -56,18 +56,18 @@
                     <p class="description">
                         {{ $comment->cmBody }}
                     </p>
-
-                    @auth
-                        <a href="javascript:void(0)" class="text-danger"
-                            data-record-id="{{ $comment->id }}" onclick="deleteRecord(event)">
-                            Delete
-                        </a>
-                    @endauth
                     
                     <label class="pull-right small">
                         {{ $comment->created_at->diffForHumans() }}
                     </label>
+                    
                 </div>
+                 @auth
+                        <a href="javascript:void(0)" class="text-danger pull-right"
+                            data-record-id="{{ $comment->id }}" onclick="deleteRecord(event)">
+                            Delete
+                        </a>
+                    @endauth
                 <hr>
             @endforeach
         @endif
