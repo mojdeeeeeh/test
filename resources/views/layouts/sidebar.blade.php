@@ -336,7 +336,7 @@
             <ul class="treeview-menu">
                <li><a href="{{ url('posts') }}"><i class="fa  fa-check-square"></i> posts</a></li>
                <li><a href="{{ url('posts/create') }}"><i class="fa fa-plus-square"></i>create post</a></li>
-               <li><a href="{{ url('new#services') }}"><i class="fa fa-sticky-note"></i> show posts</a></li>
+               <li><a href="{{ url('home') }}"><i class="fa fa-sticky-note"></i> show posts</a></li>
             </ul>
          </li>
          <li class="treeview">

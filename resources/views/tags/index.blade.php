@@ -26,7 +26,7 @@
                      <tbody>
                         @foreach ($tags as $tag)
                         <tr>
-                           <td> {{ $tag->value }} </td>
+                           <td> <a href="/tags/{{ $tag->id }}">{{ $tag->value }}</a> </td>
                            <td>
                               <a href="#" class="btn btn-danger" onclick="deleteRecord({{ $tag->id }})"> Delete</a>
                               <a href="{{ url("/tags/$tag->id/edit") }}" class="btn btn-primary">Modify</a>
@@ -39,7 +39,7 @@
 
             </div>
           </div>
-          <!-- /.widget-user -->
+         
         </div>
 </div>
 </section>

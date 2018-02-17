@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use App\Post;
+use App\PostTag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -55,7 +57,9 @@ class TagController extends Controller
      */
     public function show(tag $tag)
     {
-        //
+        $tag->load('posts');
+
+        return view('tags.info', compact(['tag','posts']));
     }
 
     /**

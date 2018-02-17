@@ -58,15 +58,16 @@
                             </div>
                           <!-- /.box-header -->
                             <div class="form-group{{ $errors->has('body') ? "has-error" : "" }}" style="padding: 10px">
-                  <label for="bodyTextArea">body</label>
-                  <div>
-                    <textarea id="bodyTextArea" name="body" class="ckeditor">{!! old('body', '') !!}</textarea>
-                  </div>
-               </div>
+                              <label for="bodyTextArea">body</label>
+                                <div>
+                                  <textarea id="bodyTextArea" name="body" class="ckeditor">{!! old('body', '') !!}</textarea>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </section>
+                      </section>
+                 
                   <!-- tag -->
                     <div class="row" style="padding: 10px">
                       <div class="col-md-12">
@@ -78,44 +79,17 @@
                       <button type="submit" class="btn btn-primary">Add note</button>
                     </div>
                   </div>
-                </form>                  
+                </form>
               </div>
-            <!-- /.box-body -->
             </div>
-          <!-- /.box -->
           </div>
         </div>
-      <!-- /.row -->
-     </section>
-    <!-- /.content -->
-  </div>
-
+      </section>
+    </div> 
 @endsection
-@section('scripts')
-{{-- <script type="text/javascript">
-   //   var editor = CKEDITOR.replace( 'ckfinder' );
-   // CKFinder.setupCKEditor( editor );
-   
-   // //..
-   //    $(function () {
-   //      // Replace the <textarea id="editor1"> with a CKEditor
-   //      // instance, using default configuration.
-   //      CKEDITOR.replace('editor1')
-   //      //bootstrap WYSIHTML5 - text editor
-   //      $('.textarea').wysihtml5()
-   //    })
-   
-      var options = {
-        filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-        filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
-        filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-        filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
-      };
-      CKEDITOR.replace( 'editor1', options );
-</script> --}}
 
+@section('scripts')
     <script type="text/javascript">
-   
 
     CKEDITOR.replace( 'bodyTextArea', {
     filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
