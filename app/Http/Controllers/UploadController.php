@@ -13,23 +13,14 @@ class UploadController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function storeUser(Request $request)
     {
-        return view('photos.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        \Auth::user()->setImage($request, 'userImage');
     }
 
     /**
@@ -38,77 +29,11 @@ class UploadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeGallery(Request $request)
     {
-       // dd ($request->file('image'));
-        
-        // if(Input::hasFile('file')){
-
-        //     echo 'Uploaded';
-        //     $file = Input::file('file');
-        //     $file->move('photos', $file->getClientOriginalName());
-        //     echo '';
-        // }
-        // 
-        
- if ($request->file('photo') == null) {
-    $file = "";
-}else{
-   $file = $request->file('photo')->store('images');  
-}
-
-// $path = $request->file('avatar')->storeAs(
-//     'avatars', $request->user()->id
-// );
-// 
-
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // \Auth::user()->setImage($request, 'userImage');
+        // \App\Gallery::gallery()->setImage($request, 'galleryImage');
+        \App\Tag::setImage($request, 'galleryImage');
     }
 
     

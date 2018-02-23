@@ -53,7 +53,7 @@
                <h4 class="title">
                   {{ $comment->cmName }}
                </h4>
-               <p class="description">
+               <p class="description cmFont">
                   {{ $comment->cmBody }}
                </p>
                <label class="pull-right small">

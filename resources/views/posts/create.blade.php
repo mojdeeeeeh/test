@@ -89,14 +89,17 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
 
-    CKEDITOR.replace( 'bodyTextArea', {
-    filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
-    filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-    filebrowserWindowWidth: '1000',
-    filebrowserWindowHeight: '700'
-} );
+<script type="text/javascript">
+   var options = {
+     filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+     filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+     filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+     filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+   };
+   CKEDITOR.replace( 'bodyTextArea', options );
 </script>
+
+
 @endsection
 

@@ -26,30 +26,25 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
    
-   
-    // public function fileUpload(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //     ]);
-
-    //     $image = $request->file('image');
-    //     $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-    //     $destinationPath = public_path('/images');
-    //     $image->move($destinationPath, $input['imagename']);
-
-    //     $this->postImage->add($input);
-
-    //     return back()->with('success','Image Upload successful');
-    // }
 
     public function dashboard1()
     {
         return view('dashboard-1');
     }
+
      public function dashboard2()
     {
         return view('dashboard-2');
+    }
+
+      public function profile()
+    {
+        return view('profile');
+    }
+
+    public function gallery()
+    {
+        return view('photos.create');
     }
 
 }

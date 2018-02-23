@@ -352,6 +352,20 @@
                <li><a href="{{ url('tags/create') }}"><i class="fa   fa-plus-square-o"></i>create tag</a></li>
             </ul>
          </li>
+         <li>
+            <a href="{{ url('gallery') }}">
+            <i class="fa fa-picture-o"></i> <span>Gallery</span>
+            <span class="pull-right-container">
+            </span>
+            </a>
+         </li>
+         <li>
+            <a href="{{ url('profile') }}">
+            <i class="fa fa-smile-o"></i> <span>Profile</span>
+            <span class="pull-right-container">
+            </span>
+            </a>
+         </li>
          <li class="header">LABELS</li>
          <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
          <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>

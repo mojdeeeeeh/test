@@ -2,15 +2,11 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-
-class User extends Authenticatable
+class Gallery extends Model
 {
-    use Notifiable;
-
     public $casts = [
         'extra' => 'array'
     ];
@@ -21,22 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'extra'
+        'title', 'extra'
     ];
 
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
 
     /**
-     * Set User image
+     * Set GALLERY image
      * @param Request $request [description]
      */
     public function setImage(Request $request, $imageFieldName)
@@ -48,7 +35,7 @@ class User extends Authenticatable
             return;
         }
 
-        $path = \Storage::disk('public')->putFile('users/images/', $file);
+        $path = \Storage::disk('public')->putFile('gallery/images/', $file);
 
         $extra = $this->extra;
         $extra['image_path'] = $path;
@@ -60,7 +47,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user image path
+     * Get gallery image path
      *
      * @return     <type>  The image.
      */

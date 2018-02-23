@@ -1,3 +1,5 @@
+"{{ route('upload.user') }}"
+
 
 theme2-> //  link maps.googleapis font and script maps.googleapis
 theme2-> js- main.js-> delete google map
@@ -26,312 +28,99 @@ var get_latitude = $('#google-map').data('latitude');
 
 
 
+////////
+ {!! Form::open(array('route' => 'postimage','files'=>true)) !!}
+            <div class="row">
+                <div class="col-md-6">
+                    {!! Form::file('image_file', array('class' => 'form-control')) !!}
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </div>
+            </div>
+    {!! Form::close() !!}
+///////////////////
+@extends('layouts.main1')
+
+@section('content')
+
+<div class="content-wrapper">
+   <section class="content">
+      <div class="row">
+        <div class="col-md-6">
+{{--            @foreach ($photos as $photo)
+                <img src="{{ $photos->path }}" alt="">
+            @endforeach --}}
+        </div>
+        <div class="col-md-6">
+
+           {{-- <input type="file" name=""> --}}
+         {{--             <form action="/upload" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+
+        <input type="file" name="image" />
+        <input type="submit" value="Send photo" />
+    </form> --}}
+<form action=action='{{ url("photos") }}' method="POST" enctype="multipart/form-data">
+  {{ csrf_field() }}
+  <div class="form-group">
+     <label for="photo">File input</label>
+     <input type="file" id="photo" name="photo">
+  </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+  <div>
+          salam
+        </div>
+           </div>
+        </div>
+      
+    </section>
+</div>
+
+@endsection
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
+<script type="text/javascript">
+
+Dropzone.options.addPhotosForm = {
+  paramName: "photo", // The name that will be used to transfer the file
+  maxFilesize: 3, // MB
+  acceptedFile: '.jpg, .jpeg, .png, .bmp'
+};
+
+</script>
+@endsection
 
 
-////////////////
-<?php
 
-namespace App\Http\Controllers;
 
-use App\Post;
-use App\Tag;
-use Illuminate\Http\Request;
 
-class PostController extends Controller
-{
-      public function __construct()
-    {
-        $this->middleware('auth')->except(['show', 'addComment']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $posts = \App\Post::orderBy('created_at', 'desc')
-        ->paginate(5);
-        return view('posts.index', compact('posts'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $tags = Tag::pluck('value', 'value')->all();
-
-        return view('posts.create',compact(['post','tags']));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required|min:2|max:255',
-            'brief' => 'required|min:6',
-            'body' => 'required|min:6'
-        ]);
-
-        
-        $user = \Auth::user();
-
-        $post = Post::create ([
-            'title'  => $request->title,
-            'brief'   => $request->brief,
-            'body'   => $request->body,
-            'user_id' => $user->id,
-        ]);
-        $tagsId = collect($request->tags)->map(function($tag) {
-            return Tag::firstOrCreate(['value' => $tag])->id;
-        });
-
-        $post->tags()->attach($tagsId);
-        
-        return redirect()->route('posts.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(post $post)
-    {
-        $post->load('comments');
-
-        return view('comments.create', compact('post'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(post $post)
-    {
-        $tags = Tag::pluck('value', 'value')->all();
-
-        return view('posts.edit', compact(['post', 'tags']));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, post $post)
-    {
-
-        $this->validate($request, [
-        'title' => 'required|min:2|max:255',
-        'brief' => 'required|min:6',
-        'body' => 'required|min:6'
-    ]);
-       
-
-    $post->update ([
-        'title' => $request->title,
-        'brief' => $request->brief,
-        'body'  => $request->body,
-    ]); 
-$tagsId = collect($request->tags)->map(function($tag) {
-            return Tag::firstOrCreate(['name' => $tag])->id;
-        });
-
-        $post->tags()->sync($tagsId);
-  
-    return redirect()->route('posts.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(post $post)
-    {
-        $post->delete();
-    }
-
-     public function addComment(Request $request, Post $post)
-    {
-        $post->comments()->create([
-            'cmBody' => $request->cmBody,
-            'cmName' => $request->cmName,
-            'cmEmail' => $request->cmEmail
-        ]);
-
-        return back()->withInput();
-    }
-}
-
-///////////////////////////
-
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Post;
-use App\Tag;
-use Illuminate\Http\Request;
-
-class PostController extends Controller
-{
-      public function __construct()
-    {
-        $this->middleware('auth')->except(['show', 'addComment']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $posts = \App\Post::orderBy('created_at', 'desc')
-        ->paginate(5);
-        return view('posts.index', compact('posts'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $tags = Tag::pluck('value', 'value')->all();
-
-        return view('posts.create',compact(['post','tags']));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required|min:2|max:255',
-            'brief' => 'required|min:6',
-            'body' => 'required|min:6'
-        ]);
-
-        
-        $user = \Auth::user();
-
-        $post = Post::create ([
-            'title'  => $request->title,
-            'brief'   => $request->brief,
-            'body'   => $request->body,
-            'user_id' => $user->id,
-        ]);
-        $tagsId = collect($request->tags)->map(function($tag) {
-            return Tag::firstOrCreate(['value' => $tag])->id;
-        });
-
-        $post->tags()->attach($tagsId);
-        
-        return redirect()->route('posts.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(post $post)
-    {
-        $post->load('comments');
-
-        return view('comments.create', compact('post'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(post $post)
-    {
-        $tags = Tag::pluck('value', 'value')->all();
-
-        return view('posts.edit', compact(['post', 'tags']));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, post $post)
-    {
-
-        $this->validate($request, [
-        'title' => 'required|min:2|max:255',
-        'brief' => 'required|min:6',
-        'body' => 'required|min:6'
-    ]);
-       
-
-    $post->update ([
-        'title' => $request->title,
-        'brief' => $request->brief,
-        'body'  => $request->body,
-    ]); 
-$tagsId = collect($request->tags)->map(function($tag) {
-            return Tag::firstOrCreate(['name' => $tag])->id;
-        });
-
-        $post->tags()->sync($tagsId);
-  
-    return redirect()->route('posts.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(post $post)
-    {
-        $post->delete();
-    }
-
-     public function addComment(Request $request, Post $post)
-    {
-        $post->comments()->create([
-            'cmBody' => $request->cmBody,
-            'cmName' => $request->cmName,
-            'cmEmail' => $request->cmEmail
-        ]);
-
-        return back()->withInput();
-    }
-}
-
+{{-- <html>
+<head>
+    <title>Laravel5.4 - Image upload with validation</title>
+    <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>File Upload</h1>
+            <form action="{{ URL::to('upload') }}" method="post" enctype="multipart/form-data">
+                <label>Select image to upload:</label>
+                <input type="hidden" value="{{ csrf_token() }}" name="_token">
+                <input type="file" name="image" id="file">
+                @if ($errors->has('image'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('image') }}</strong>
+                    </span>
+                @endif
+                <input type="submit" value="Upload" name="submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html> --}}
 
 
