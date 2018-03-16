@@ -44,7 +44,7 @@
                         <li>
                            <a href="#">
                               <div class="pull-left">
-                                 <img src="{{ asset('theme/dist/img/user3-128x128.jpg') }}" class="img-circle" alt="User Image">
+                                 <img src="{{ '/storage/' . Auth::user()->getImage() }}" alt="User profile picture class="img-circle" alt="User Image">
                               </div>
                               <h4>
                                  AdminLTE Design Team
@@ -221,7 +221,7 @@
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-               <img src="{{ asset('theme/dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
+               <img src="{{ '/storage/' . Auth::user()->getImage() }}" alt="User profile picture" class="user-image" >
                <span class="hidden-xs">  {{ Auth::user()->name }}</span>
                </a>
             <li>
@@ -284,7 +284,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
          <div class="pull-left image">
-            <img src="{{ asset('theme/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+            <img src="{{ '/storage/' . Auth::user()->getImage() }}" alt="User profile picture" class="user-image-side">
          </div>
          <div class="pull-left info">
             <p>  {{ Auth::user()->name }}</p>
@@ -353,7 +353,7 @@
             </ul>
          </li>
          <li>
-            <a href="{{ url('gallery') }}">
+            <a href="{{ route('galleries.index') }}">
             <i class="fa fa-picture-o"></i> <span>Gallery</span>
             <span class="pull-right-container">
             </span>

@@ -5,11 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Gallery extends Model
+class Photo extends Model
 {
-    
+
     protected $fillable = [
-        'title', 'extra'
+        'title', 'extra', 'gallery_id'
     ];
     
     protected $guarded = [
@@ -20,8 +20,9 @@ class Gallery extends Model
         'extra' => 'array'
     ];
 
+
     /**
-     * Set gallery image
+     * Set image
      * @param Request $request [description]
      */
     public function setImage(Request $request, $imageFieldName)
@@ -33,7 +34,7 @@ class Gallery extends Model
             return;
         }
 
-        $path = \Storage::disk('public')->putFile('gallery/images/', $file);
+        $path = \Storage::disk('public')->putFile('photos/images/', $file);
 
         $extra = $this->extra;
         $extra['image_path'] = $path;
@@ -45,7 +46,7 @@ class Gallery extends Model
     }
 
     /**
-     * Get gallery image path
+     * Get image path
      *
      * @return     <type>  The image.
      */
@@ -59,8 +60,20 @@ class Gallery extends Model
         return "";    
     }
 
-    public function photos()
+     public function gallery()
     {
-        return $this->hasMany(\App\Photo::class);
+        return $this->belongsTo(\App\Gallery::class);
+    }
+
+    /**
+     * Delete photo
+     * @param  Photo  $photo [description]
+     * @return [type]        [description]
+     */
+    public function removePhoto()
+    {
+        \Storage::disk('public')->delete($this->getImage());
+
+        $this->delete();
     }
 }

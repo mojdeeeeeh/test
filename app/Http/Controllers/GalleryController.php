@@ -14,7 +14,9 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        //
+        $galleries = \App\Gallery::paginate(10);
+
+        return view('gallery.index', compact('galleries'));
     }
 
     /**
@@ -24,7 +26,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        return view('gallery.create');
     }
 
     /**
@@ -35,7 +37,13 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gallery = \App\Gallery::create([
+            'title' => $request->title
+        ]);
+
+        $gallery->setImage($request, 'image');
+
+        return redirect()->route('galleries.index');
     }
 
     /**
@@ -57,7 +65,7 @@ class GalleryController extends Controller
      */
     public function edit(Gallery $gallery)
     {
-        //
+        return view('gallery.edit', compact('gallery'));
     }
 
     /**
@@ -69,7 +77,12 @@ class GalleryController extends Controller
      */
     public function update(Request $request, Gallery $gallery)
     {
-        //
+        $gallery->update ([
+            'title'  => $request->title
+        ]);
+        $gallery->setImage($request, 'image');
+
+        return redirect()->route('galleries.index');
     }
 
     /**
@@ -80,6 +93,13 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        //
+        $gallery->delete();
     }
+
+    // public function gPage()
+    // {
+    //     $galleries = \App\Gallery::paginate(10);
+
+    //     return view('gallery.gPage', compact('galleries'));
+    // }
 }

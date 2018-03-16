@@ -17,8 +17,9 @@ class CommentController extends Controller
     {
         $posts = \App\Post::orderBy('created_at', 'desc')
                             ->paginate(6);
+        $galleries = \App\Gallery::all();
 
-        return view('home', compact(['posts']));
+        return view('home', compact(['posts', 'galleries']));
     }
 
     /**

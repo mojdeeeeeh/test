@@ -1,49 +1,54 @@
-@extends('layouts.main1')
+ @extends('layouts.main1')
 
-@section('content')
+ @section('content')
 <div class="content-wrapper">
+
     <section class="content">
+        <h1>
+            {{ $gallery->title }}
+        </h1>
+
       <div class="row">
-        <div class="col-md-3">
-
-          <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body">
-                <!-- form start -->
-                <form action='{{ url("upload/gallery") }}' method="post" enctype="multipart/form-data">
-                  {{ csrf_field() }}
-                    <legend>
-                      <h1>Upload image</h1>
-                    </legend>
-                   
-                    <div class="form-group">
-                        <input type="file" name="userImage" id="file" />
-                    </div>
-                   
-                    <div class="form-group">
-                        <input type="submit" value="Upload" />
-                    </div>               
-                </form>
-            </div>              
-          </div>
-        </div>
-
-
         <!-- left column -->
-        <div class="col-md-8">
-          <!-- general form elements -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
-              <div class="box-header with-border">
-                <h3 class="box-title">gallery</h3>
-              </div>
-            {{-- <img class="profile-user-img img-responsive img-circle" src="{{ '/storage/' . Auth::user()->getImage() }}" alt="User profile picture"> --}} 
-            </div>
-          </div>
-          <!-- /.box -->
-        </div>
-    </section>
-  </div>
+          <div class="col-md-offset-2 col-md-8">
+            <!-- general form elements disabled -->
+            <div class="box box-primary">
+               <div class="box-header with-border">
+                  <h3 class="box-title">Photo</h3>
+               </div>
+               <!-- /.box-header -->
+               <div class="box-body">
+            <!-- form start -->
+            <form class="form-horizontal" action="{{ route('photos.store', $gallery->id) }}"
+                        method="post" enctype="multipart/form-data">
 
+              {{ csrf_field() }}
+
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputTitle">Photo title</label>
+                  <input type="text" name="title" value=""
+                        class="form-control col-md-5" placeholder="Photo title" />
+                </div>
+               
+                <div class="form-group">
+                  <label for="exampleInputFile">Image input</label>
+                  <input type="file" name="image"  />
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" />
+                </div>
+            
+              </div>
+              <!-- /.box-body -->
+
+            </form>
+          </div>
+      </div>
+  </div>
+</section>
+</div>
 @endsection
-{{--  --}}
+
+

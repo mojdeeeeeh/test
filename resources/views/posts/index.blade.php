@@ -73,7 +73,7 @@
             location.reload();
          })
          .catch(function(res){
-            alert(rest.message);
+            alert(res.message);
          });
       }
  }

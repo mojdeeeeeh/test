@@ -29,12 +29,6 @@ class UploadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeGallery(Request $request)
-    {
-        // \Auth::user()->setImage($request, 'userImage');
-        // \App\Gallery::gallery()->setImage($request, 'galleryImage');
-        \App\Tag::setImage($request, 'galleryImage');
-    }
 
     
 }

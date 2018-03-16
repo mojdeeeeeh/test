@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Gallery;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    //  public function gPage()
+    // {
+    //     $galleries = \App\Gallery::orderBy('created_at', 'desc')
+    //                         ->paginate(6);
+
+    //     return view('home', compact(['galleries']));
+    // }
     /**
      * Create a new controller instance.
      *
@@ -15,9 +24,10 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+
      public function index()
-    {
-        return view('home');
+    {    
+        return view('home', compact(['galleries']));
     }
 
     /**
@@ -42,9 +52,10 @@ class HomeController extends Controller
         return view('profile');
     }
 
-    public function gallery()
-    {
-        return view('photos.create');
-    }
+    // public function gallery()
+    // {
+    //     return view('photos.create');
+    // }
 
+   
 }
